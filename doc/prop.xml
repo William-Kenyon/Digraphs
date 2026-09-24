@@ -451,6 +451,34 @@ false
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="IsParadoxical">
+<ManSection>
+  <Prop Name="IsParadoxical" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    A tournament <A>D</A> is <E>paradoxical</E> if every vertex has at least
+    one in-neighbour, i.e. each player loses at least one game. This is the
+    same as being <M>1</M>-paradoxical; see <Ref Oper="IsKParadoxical"/>.
+    <P/>
+    If <A>D</A> has no vertices, then the answer is <K>false</K>.
+    <P/>
+    If <A>D</A> is not a tournament (see <Ref Prop="IsTournament"/>), then an
+    error is raised.
+    <P/>
+
+    &MUTABLE_RECOMPUTED_PROP;
+
+    <Example><![CDATA[
+gap> D := Digraph([[2], [3], [1]]);;
+gap> IsParadoxical(D);
+true
+gap> D := Digraph([[2, 3], [3], []]);;
+gap> IsParadoxical(D);
+false]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="IsChainDigraph">
 <ManSection>
   <Prop Name="IsChainDigraph" Arg="digraph"/>

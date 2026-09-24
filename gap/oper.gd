@@ -117,6 +117,7 @@ DeclareOperation("IsPerfectMatching", [IsDigraph, IsHomogeneousList]);
 DeclareOperation("IsDigraphPath",
                  [IsDigraph, IsHomogeneousList, IsHomogeneousList]);
 DeclareOperation("IsDigraphPath", [IsDigraph, IsList]);
+DeclareOperation("IsKParadoxical", [IsDigraph, IsInt]);
 
 # 9. Connectivity . . .
 DeclareOperation("DigraphIsKing", [IsDigraph, IsPosInt, IsPosInt]);

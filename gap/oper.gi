@@ -1596,6 +1596,44 @@ function(D, edges)
   return true;
 end);
 
+InstallMethod(IsKParadoxical, "for a tournament and a non-negative int",
+[IsDigraph, IsInt],
+function(D, k)
+  local n, subset, blists;
+  n := DigraphNrVertices(D);
+
+  if not IsTournament(D) then
+    ErrorNoReturn("the 1st argument <D> must be a tournament,");
+  fi;
+
+  if k < 0 then
+    ErrorNoReturn("the 2nd argument <k> must be non-negative,");
+  fi;
+
+  if n = 0 then
+    return false;
+  fi;
+
+  if k = 0 then
+    return true;
+  fi;
+
+  # this minimum number of vertices needed for k-paradox is given by
+  # Szekeres, E.; Szekeres, G. (1965), "On a problem of Schütte and Erdős"
+  if n < (k+2) * (2^(k-1)) - 1 then
+    return false;
+  fi;
+
+  blists := List(InNeighbours(D), inn -> BlistList([1..n], inn));
+  for subset in Combinations(blists, k) do
+    if SizeBlist(IntersectionBlist(subset)) = 0 then
+      return false;
+    fi;
+  od;
+
+  return true;
+end);
+
 #############################################################################
 # 9.  Connectivity
 #############################################################################

@@ -41,6 +41,30 @@ gap> gr := Digraph([[], [3, 4], [1, 4], [1]]);
 gap> DigraphIsKing(gr, 2, 2);
 Error, the 1st argument <D> must be a tournament,
 
+#  IsKParadoxical: for a tournament and a non-negative integer
+gap> gr := Digraph([[2], [1]]);;
+gap> IsKParadoxical(gr, 1);
+Error, the 1st argument <D> must be a tournament,
+gap> gr := EmptyDigraph(0);;
+gap> IsKParadoxical(gr, 1);
+false
+gap> gr := Digraph([[]]);;
+gap> IsKParadoxical(gr, 0);
+true
+gap> IsKParadoxical(gr, -1);
+Error, the 2nd argument <k> must be non-negative,
+gap> gr := Digraph([[2], [3], [1]]);;
+gap> IsTournament(gr);
+true
+gap> IsKParadoxical(gr, 1);
+true
+gap> IsKParadoxical(gr, 2);
+false
+gap> gr := Digraph([[2, 3, 5], [3, 4, 6], [4, 5, 7], [5, 6, 1], [6, 7, 2],
+> [7, 1, 3], [1, 2, 4]]);;
+gap> IsKParadoxical(gr, 2);
+true
+
 #  DigraphRemoveLoops
 gap> gr := DigraphFromDigraph6String("&EhxPC?@");
 <immutable digraph with 6 vertices, 11 edges>
