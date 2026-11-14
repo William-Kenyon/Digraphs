@@ -1626,13 +1626,14 @@ true
     <A>u</A> to vertex <A>v</A>, if such a path exists. If <C><A>u</A> =
     <A>v</A></C> or no path exists, this operation returns <K>fail</K>. See
     Section <Ref Subsect="Definitions" Style="Text"/> for the definition of a
-    directed path. <P/>
+    directed path. See <Ref Oper="DigraphPath"/> for details on the output. <P/>
 
     The method for <C>DigraphShortestPath</C> has worst case complexity of
     <M>O(m + n)</M> where <M>m</M> is the number of edges and <M>n</M> the
     number of vertices in <A>digraph</A>. <P/>
 
-    See <Ref Oper="DigraphPath"/> for details on the output. <P/>
+    See <Ref Oper="DigraphShortestPaths"/>. See also the
+    weighted operation <Ref Oper="EdgeWeightedDigraphShortestPath"/>.
 <Example><![CDATA[
 gap> D := Digraph([[1, 2], [3], [2, 4], [1], [2, 4]]);
 <immutable digraph with 5 vertices, 8 edges>
@@ -2252,7 +2253,11 @@ false]]></Example>
     <C>parents[v]</C> is the final vertex before <C>v</C> on the shortest path
     from <A>source</A> to <C>v</C>. <P/> If a vertex is unreachable from
     <A>v</A>, then its distance is <K>infinity</K>, and its parent is <C>-1</C>.
+    <P/>
 
+    For a simple way of finding the shortest path between two specific vertices,
+    see <Ref Oper="DigraphShortestPath"/>. See also the weighted operation
+    <Ref Oper="EdgeWeightedDigraphShortestPath"/>.
     <Example><![CDATA[
 gap> D := Digraph([[2, 3], [3], []]);
 <immutable digraph with 3 vertices, 3 edges>
