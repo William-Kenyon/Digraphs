@@ -2031,6 +2031,14 @@ gap> gr := CayleyDigraph(SymmetricGroup(7));;
 gap> Length(DigraphShortestPath(gr, 12, 5014)[1]);
 21
 
+# DigraphShortestPath - lex-least
+gap> D := Digraph([[3, 2], [5], [4], [6], [6], []]);
+<immutable digraph with 6 vertices, 6 edges>
+gap> OutNeighbours(D)[1];
+[ 3, 2 ]
+gap> DigraphShortestPath(D, 1, 6);
+[ [ 1, 2, 5, 6 ], [ 2, 1, 1 ] ]
+
 # IsReachableFrom
 gap> D := CompleteDigraph(5);
 <immutable complete digraph with 5 vertices>

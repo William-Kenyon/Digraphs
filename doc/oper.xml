@@ -1622,11 +1622,12 @@ true
   <Oper Name="DigraphShortestPath" Arg="digraph, u, v"/>
   <Returns>A pair of lists, or <K>fail</K>.</Returns>
   <Description>
-    Returns a shortest directed path in the digraph <A>digraph</A> from vertex
-    <A>u</A> to vertex <A>v</A>, if such a path exists. If <C><A>u</A> =
-    <A>v</A></C> or no path exists, this operation returns <K>fail</K>. See
-    Section <Ref Subsect="Definitions" Style="Text"/> for the definition of a
-    directed path. See <Ref Oper="DigraphPath"/> for details on the output. <P/>
+    Returns the lexicographically least shortest directed path in the digraph
+    <A>digraph</A> from vertex <A>u</A> to vertex <A>v</A>, if such a path
+    exists. If <C><A>u</A> = <A>v</A></C> or no path exists, this operation
+    returns <K>fail</K>. See Section <Ref Subsect="Definitions" Style="Text"/>
+    for the definition of a directed path. See <Ref Oper="DigraphPath"/> for
+    details on the output. <P/>
 
     The method for <C>DigraphShortestPath</C> has worst case complexity of
     <M>O(m + n)</M> where <M>m</M> is the number of edges and <M>n</M> the

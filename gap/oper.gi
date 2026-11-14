@@ -1811,12 +1811,11 @@ end);
 # - distance from source vertex
 # - previous vertex on shortest path from source
 InstallGlobalFunction(DIGRAPHS_ShortestPathsBFS,
-function(D, source, target)
-  local neighbours, dist, previous, queue, i, a, b;
+function(neighbours, source, target)
+  local dist, previous, queue, i, a, b;
 
-  neighbours := OutNeighbours(D);
-  dist := ListWithIdenticalEntries(DigraphNrVertices(D), infinity);
-  previous := ListWithIdenticalEntries(DigraphNrVertices(D), -1);
+  dist := ListWithIdenticalEntries(Length(neighbours), infinity);
+  previous := ListWithIdenticalEntries(Length(neighbours), -1);
 
   dist[source] := 0;
   queue := [source];
@@ -1842,7 +1841,7 @@ InstallMethod(DigraphShortestPath,
 "for a digraph and two vertices",
 [IsDigraph, IsPosInt, IsPosInt],
 function(D, u, v)
-  local verts, bfs, previous, vertices, edges, a, b;
+  local verts, reversed, a, distanceto, neighbours, vertices, edges, best, w, i;
 
   verts := DigraphVertices(D);
   if not (u in verts and v in verts) then
@@ -1866,23 +1865,44 @@ function(D, u, v)
     return fail;
   fi;
 
-  bfs := DIGRAPHS_ShortestPathsBFS(D, u, v);
-  previous := bfs[2];
-  if bfs[1][v] = infinity then
+  # the rest of this method is to guarantee that the returned path is lex-least
+  # otherwise could generate path by just walking backwards via predecessors
+
+  # want to walk forwards from u to v, which requires knowing the distance to
+  # v instead of from u, therefore have to call the BFS on the reverse of D
+  # could use DigraphReverse(), but if D is mutable it gets changed in place,
+  # so would have to be un-reversed afterwards
+  neighbours := OutNeighbours(D);
+  reversed := List([1 .. Length(neighbours)], x -> []);
+  for a in [1 .. Length(neighbours)] do
+    for w in neighbours[a] do
+      Add(reversed[w], a);
+    od;
+  od;
+  distanceto := DIGRAPHS_ShortestPathsBFS(reversed, v, u)[1];
+  if distanceto[u] = infinity then
     return fail;
   fi;
 
-  # reconstruct path by walking backwards from v to u
-  vertices := [v];
+  vertices := [u];
   edges := [];
-  b := v;
-  while b <> u do
-    a := previous[b];
-    Add(edges, Position(OutNeighbours(D)[a], b));
+  a := u;
+  while a <> v do
+    best := fail;
+    # find smallest vertex that brings us one step closer to v
+    # OutNeighbours aren't necessarily in order, so is slightly more involved
+    for i in [1 .. Length(neighbours[a])] do
+      w := neighbours[a][i];
+      if distanceto[w] = distanceto[a] - 1
+          and (best = fail or w < neighbours[a][best]) then
+        best := i;
+      fi;
+    od;
+    Add(edges, best);
+    a := neighbours[a][best];
     Add(vertices, a);
-    b := a;
   od;
-  return [Reversed(vertices), Reversed(edges)];
+  return [vertices, edges];
 end);
 
 InstallMethod(DigraphShortestPaths, "for a digraph and a vertex",
@@ -1893,7 +1913,7 @@ function(D, source)
                   "1st argument <D>");
   fi;
 
-  return DIGRAPHS_ShortestPathsBFS(D, source, fail);
+  return DIGRAPHS_ShortestPathsBFS(OutNeighbours(D), source, fail);
 end);
 
 InstallMethod(IteratorOfPaths,
